@@ -7,7 +7,7 @@ Built for **Graph Hacks 2026 (WeMakeDevs x FalkorDB), Track 1: Agents That Act o
 | | |
 | --- | --- |
 | Live case report (saved output of one run) | https://vaibhav-2709.github.io/ringbreaker/report.html |
-| Demo video | `<ADD YOUR VIDEO LINK>` |
+| Demo video | `<VIDEO LINK>` |
 | Source code | https://github.com/vaibhav-2709/ringbreaker |
 
 > The report link is a **saved result** of the agent's run, so you can see what it produces without installing anything. The agent itself runs locally (setup below).
