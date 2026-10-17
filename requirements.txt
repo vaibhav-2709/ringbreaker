@@ -1,0 +1,3 @@
+falkordblite; sys_platform != "win32"
+falkordb
+mcp

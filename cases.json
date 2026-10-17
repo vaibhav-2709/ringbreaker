@@ -1,0 +1,470 @@
+[
+  {
+    "case_id": "CASE-001",
+    "verdict": "FREEZE",
+    "score": 90,
+    "accounts": [
+      "ACCT0457",
+      "ACCT0458",
+      "ACCT0459",
+      "ACCT0460",
+      "ACCT0461",
+      "ACCT0462",
+      "ACCT0463",
+      "ACCT0464",
+      "ACCT0465",
+      "ACCT0466"
+    ],
+    "hub": "ACCT0457",
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [
+      {
+        "name": "new_accounts",
+        "points": 25,
+        "why": "10 of 10 accounts are younger than 90 days",
+        "evidence": []
+      },
+      {
+        "name": "unverified_kyc",
+        "points": 20,
+        "why": "10 of 10 owners have unverified KYC",
+        "evidence": []
+      },
+      {
+        "name": "shared_identity",
+        "points": 20,
+        "why": "0 shared device(s), 1 shared address(es) across owners",
+        "evidence": [
+          "ACCT0457 <-[OWNS]- owner -[LIVES_AT]-> ADDR0417 <-[LIVES_AT]- owner -[OWNS]-> ACCT0458",
+          "ACCT0457 <-[OWNS]- owner -[LIVES_AT]-> ADDR0417 <-[LIVES_AT]- owner -[OWNS]-> ACCT0459",
+          "ACCT0457 <-[OWNS]- owner -[LIVES_AT]-> ADDR0417 <-[LIVES_AT]- owner -[OWNS]-> ACCT0460",
+          "ACCT0457 <-[OWNS]- owner -[LIVES_AT]-> ADDR0417 <-[LIVES_AT]- owner -[OWNS]-> ACCT0461"
+        ]
+      },
+      {
+        "name": "funnel_hub",
+        "points": 25,
+        "why": "ACCT0457 collects from 9 cluster members",
+        "evidence": [
+          "ACCT0465 -[SENT TXN01439: 15813]-> ACCT0457",
+          "ACCT0458 -[SENT TXN01418: 14124]-> ACCT0457",
+          "ACCT0463 -[SENT TXN01433: 13905]-> ACCT0457",
+          "ACCT0464 -[SENT TXN01436: 12838]-> ACCT0457",
+          "ACCT0462 -[SENT TXN01430: 12168]-> ACCT0457"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "tool": "identity_clusters",
+        "why": "start from structure: group accounts that share owners, devices or addresses",
+        "found": "WCC over identity links found 9 cluster(s) with >= 3 accounts"
+      },
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "10 accounts, median age 19d, 10 younger than 90d, 10 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "0 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "money_cycles",
+        "why": "young linked accounts: test whether money returns to its origin",
+        "found": "no money cycles"
+      },
+      {
+        "tool": "funnel_hub",
+        "why": "test for a collector account that members pay into (PageRank + in-cluster fan-in)",
+        "found": "ACCT0457 receives from 9 cluster members (total 108588.0); global PageRank 0.007"
+      },
+      {
+        "tool": "money_neighbours",
+        "why": "identity links can miss members; follow money to young neighbours",
+        "found": "0 young account(s) transact with the cluster"
+      },
+      {
+        "tool": "merchant_exposure",
+        "why": "check whether a merchant settles into the cluster (a shell storefront)",
+        "found": "no merchant settles into the cluster"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-002",
+    "verdict": "FREEZE",
+    "score": 75,
+    "accounts": [
+      "ACCT0451",
+      "ACCT0452",
+      "ACCT0453",
+      "ACCT0454",
+      "ACCT0455",
+      "ACCT0456"
+    ],
+    "hub": null,
+    "cycles": [
+      [
+        "ACCT0451",
+        "ACCT0456",
+        "ACCT0455",
+        "ACCT0454",
+        "ACCT0453",
+        "ACCT0452",
+        "ACCT0451"
+      ]
+    ],
+    "merchant": null,
+    "victims": [],
+    "signals": [
+      {
+        "name": "new_accounts",
+        "points": 25,
+        "why": "6 of 6 accounts are younger than 90 days",
+        "evidence": []
+      },
+      {
+        "name": "shared_identity",
+        "points": 20,
+        "why": "3 shared device(s), 3 shared address(es) across owners",
+        "evidence": [
+          "ACCT0451 <-[OWNS]- owner -[USES]-> DEV0442 <-[USES]- owner -[OWNS]-> ACCT0453",
+          "ACCT0451 <-[OWNS]- owner -[USES]-> DEV0442 <-[USES]- owner -[OWNS]-> ACCT0454",
+          "ACCT0451 <-[OWNS]- owner -[USES]-> DEV0442 <-[USES]- owner -[OWNS]-> ACCT0456",
+          "ACCT0452 <-[OWNS]- owner -[USES]-> DEV0444 <-[USES]- owner -[OWNS]-> ACCT0453"
+        ]
+      },
+      {
+        "name": "money_carousel",
+        "points": 30,
+        "why": "1 cycle(s) where funds return to the sender",
+        "evidence": [
+          "ACCT0451 -[SENT]-> ACCT0456 -[SENT]-> ACCT0455 -[SENT]-> ACCT0454 -[SENT]-> ACCT0453 -[SENT]-> ACCT0452 -[SENT]-> ACCT0451"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "6 accounts, median age 52d, 6 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "3 device(s) and 3 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "money_cycles",
+        "why": "young linked accounts: test whether money returns to its origin",
+        "found": "1 distinct money cycle(s)"
+      },
+      {
+        "tool": "funnel_hub",
+        "why": "test for a collector account that members pay into (PageRank + in-cluster fan-in)",
+        "found": "ACCT0452 receives from 1 cluster members (total 131876.0); global PageRank 0.002"
+      },
+      {
+        "tool": "money_neighbours",
+        "why": "identity links can miss members; follow money to young neighbours",
+        "found": "0 young account(s) transact with the cluster"
+      },
+      {
+        "tool": "merchant_exposure",
+        "why": "check whether a merchant settles into the cluster (a shell storefront)",
+        "found": "no merchant settles into the cluster"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-003",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0031",
+      "ACCT0032",
+      "ACCT0033"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 950d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "1 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-004",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0100",
+      "ACCT0254",
+      "ACCT0306"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 313d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "0 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-005",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0211",
+      "ACCT0410",
+      "ACCT0430"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 2196d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "1 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-006",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0097",
+      "ACCT0098",
+      "ACCT0126"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 1819d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "0 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-007",
+    "verdict": "FREEZE",
+    "score": 80,
+    "accounts": [
+      "ACCT0467",
+      "ACCT0468",
+      "ACCT0469",
+      "ACCT0470"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": "MERCH_SHELL1",
+    "victims": [
+      "ACCT0215",
+      "ACCT0039",
+      "ACCT0305",
+      "ACCT0194",
+      "ACCT0178",
+      "ACCT0186",
+      "ACCT0286",
+      "ACCT0065",
+      "ACCT0158",
+      "ACCT0142",
+      "ACCT0288",
+      "ACCT0038",
+      "ACCT0338",
+      "ACCT0160"
+    ],
+    "signals": [
+      {
+        "name": "new_accounts",
+        "points": 25,
+        "why": "3 of 3 accounts are younger than 90 days",
+        "evidence": []
+      },
+      {
+        "name": "shared_identity",
+        "points": 20,
+        "why": "1 shared device(s), 0 shared address(es) across owners",
+        "evidence": [
+          "ACCT0467 <-[OWNS]- owner -[USES]-> DEV0455 <-[USES]- owner -[OWNS]-> ACCT0469",
+          "ACCT0467 <-[OWNS]- owner -[USES]-> DEV0455 <-[USES]- owner -[OWNS]-> ACCT0470"
+        ]
+      },
+      {
+        "name": "money_expansion",
+        "points": 10,
+        "why": "1 young account(s) outside the cluster trade with it: ACCT0468",
+        "evidence": [
+          "ACCT0470 -[SENT TXN01458: 23438]- ACCT0468"
+        ]
+      },
+      {
+        "name": "shell_merchant",
+        "points": 25,
+        "why": "MERCH_SHELL1 (QuickRefund Services) settles into the cluster; 14 accounts paid it a total of 42280.0",
+        "evidence": [
+          "ACCT0470 -[SETTLES_FOR]-> MERCH_SHELL1 <-[AT]- txn <-[FROM]- 14 paying accounts"
+        ]
+      }
+    ],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 30d, 3 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "1 device(s) and 0 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "money_cycles",
+        "why": "young linked accounts: test whether money returns to its origin",
+        "found": "no money cycles"
+      },
+      {
+        "tool": "funnel_hub",
+        "why": "test for a collector account that members pay into (PageRank + in-cluster fan-in)",
+        "found": "ACCT0467 receives from 1 cluster members (total 21206.0); global PageRank 0.000"
+      },
+      {
+        "tool": "money_neighbours",
+        "why": "identity links can miss members; follow money to young neighbours",
+        "found": "1 young account(s) transact with the cluster"
+      },
+      {
+        "tool": "merchant_exposure",
+        "why": "check whether a merchant settles into the cluster (a shell storefront)",
+        "found": "1 merchant(s) settle into the cluster"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-008",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0106",
+      "ACCT0114",
+      "ACCT0131"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 2546d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "1 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  },
+  {
+    "case_id": "CASE-009",
+    "verdict": "CLEAR",
+    "score": 0,
+    "accounts": [
+      "ACCT0136",
+      "ACCT0235",
+      "ACCT0251"
+    ],
+    "hub": null,
+    "cycles": [],
+    "merchant": null,
+    "victims": [],
+    "signals": [],
+    "trace": [
+      {
+        "tool": "cluster_profile",
+        "why": "check account age and KYC before spending effort on deeper traversals",
+        "found": "3 accounts, median age 988d, 0 younger than 90d, 0 with unverified KYC"
+      },
+      {
+        "tool": "shared_identity",
+        "why": "find the devices/addresses that bind the cluster together",
+        "found": "0 device(s) and 1 address(es) are shared across accounts in the cluster"
+      },
+      {
+        "tool": "(stop)",
+        "why": "mature, verified accounts: sharing a home or phone is normal; no deeper traversal needed",
+        "found": "cluster looks like a household"
+      }
+    ]
+  }
+]
