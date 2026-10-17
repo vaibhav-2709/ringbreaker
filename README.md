@@ -5,8 +5,6 @@
 RingBreaker treats a bank's accounts, owners, devices, addresses, merchants and transactions as one graph.
 It finds organised fraud rings, **freezes the accounts, flags the victims, and shows the graph path behind every decision.**
 
-- Public repo: `<ADD YOUR GITHUB REPO LINK>`
-- Demo video: `<ADD YOUR VIDEO LINK>`
 - Live deployment: none. Full local setup is below.
 
 ## AI assistance disclosure
