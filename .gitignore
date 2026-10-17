@@ -1,4 +1,7 @@
-   __pycache__/
-   *.db
-   cases.json
-   report.html
+__pycache__/
+*.pyc
+*.db
+cases.json
+docs/WALKTHROUGH.md
+.env
+.venv/
