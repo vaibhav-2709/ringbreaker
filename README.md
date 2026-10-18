@@ -184,8 +184,8 @@ The team chose the track and the fraud-investigation direction, read the hackath
 
 | Member | What they did |
 | --- | --- |
-| Vaibhav (GitHub: [vaibhav-2709](https://github.com/vaibhav-2709)) | Team lead. Chose Track 1 after comparing the three tracks, registered the team, reviewed the rules and the submission requirements, installed Docker and ran the project against FalkorDB on Windows (which exposed the Windows setup problem that was then fixed), explored the graph in FalkorDB Browser, created the public repository and the GitHub Pages report, and prepared the submission. |
-| Sanjana (GitHubSanjana2794):  | Cloned the repository and ran the setup on a second machine to check the install steps, read through the detection logic (`tools.py`, `agent.py`), and wrote the project blog post. |
+| Vaibhav Dutt Trivedi (GitHub: [vaibhav-2709](https://github.com/vaibhav-2709)) | Team lead. Chose Track 1 after comparing the three tracks, registered the team, reviewed the rules and the submission requirements, installed Docker and ran the project against FalkorDB on Windows (which exposed the Windows setup problem that was then fixed), explored the graph in FalkorDB Browser, created the public repository and the GitHub Pages report, and prepared the submission. |
+| Sanjana Malhotra:  | Cloned the repository and ran the setup on a second machine to check the install steps, read through the detection logic (`tools.py`, `agent.py`), and wrote the project blog post. |
 | Neha Sardana | Reviewed the synthetic data design and the planted fraud patterns, ran the detection tests, and checked the report and demo walkthrough before submission. |
 ## Project layout
 
